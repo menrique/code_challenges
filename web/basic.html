@@ -1,0 +1,79 @@
+<!--1. Write the HTML, CSS, and JavaScript (jQuery is fine) that implements the following: A blue button with yellow text-->
+<!--is on a page, which has a black background. When I hover over the button, its background turns green. Below the button-->
+<!--is a white box that takes up the entire width of the page, and the box contains a text list of 5 items. The items are-->
+<!--“green apple”, “orange”, “cherry”, “blueberry”, and “banana”. Every time the button is clicked, an additional item is-->
+<!--randomly added to the list from among the existing items. When I hover over each of the items, the entire box-->
+<!--containing the list turns that item’s color (e.g. hovering over “green apple” turns the box green, “orange” turns it-->
+<!--orange, “cherry” turns it red, “blueberry” turns it blue, and “banana” turns it yellow).-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>One Degree</title>
+    <style type="text/css">
+        body {
+            background-color: black;
+        }
+
+        .btn {
+            background-color: blue;
+            color: yellow;
+            border: none;
+            font-size: 20px;
+            padding: 10px;
+        }
+
+        .btn:hover {
+            background-color: green;
+        }
+
+        .white_box {
+            width: 100%;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+
+<button id="add_fruit" class="btn">Add fruit</button>
+<ul id="basket" class="white_box"></ul>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+    function addFruit(basket, fruit){
+        basket.append(
+            $('<li></li>').text(fruit.name).data('color', fruit.color).
+            mouseenter(function(){
+                basket.css('background-color', $(this).data('color'));
+            }).
+            mouseleave(function(){
+                basket.css('background-color', 'white');
+            })
+        );
+    }
+
+    $(document).ready(function() {
+        let basket = $('#basket');
+        let fruits = [
+            {name: 'green apple', color: 'green'},
+            {name: 'orange', color: 'orange'},
+            {name: 'cherry', color: 'red'},
+            {name: 'blueberry', color: 'blue'},
+            {name: 'banana', color: 'yellow'},
+        ];
+
+        $.each(fruits, function(index, fruit) {
+            addFruit(basket, fruit);
+        });
+
+        $('#add_fruit').on('click', function(){
+            let randomIndex = Math.floor(Math.random() * fruits.length);
+            addFruit(basket, fruits[randomIndex]);
+        });
+    });
+</script>
+</body>
+</html>
